@@ -4,5 +4,4 @@ export const routes = {
   profile: '/profile',
   settings: '/settings',
 } as const
-
 export type RouteName = keyof typeof routes

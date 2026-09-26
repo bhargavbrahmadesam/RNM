@@ -3,15 +3,32 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Drawer } from 'expo-router/drawer'
 import { StatusBar } from 'expo-status-bar'
 import { Ionicons } from '@expo/vector-icons'
+import { ThemeProvider, useTheme } from '@squeez/shared-ui'
 import { drawerItems } from '@/constants/drawerItems'
-export default function RootLayout() {
+
+function ThemedDrawer() {
+  const { theme, themeName } = useTheme()
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <>
       <Drawer
         screenOptions={{
-          drawerActiveTintColor: '#007AFF',
-          drawerInactiveTintColor: '#555',
-          headerShown: true,
+          drawerActiveTintColor: theme.brand.primary,
+          drawerInactiveTintColor: theme.text.secondary,
+          drawerStyle: {
+            backgroundColor: theme.bg.surface,
+          },
+          headerStyle: {
+            backgroundColor: theme.bg.surface,
+            borderBottomColor: theme.border.default,
+          },
+          headerTintColor: theme.text.primary,
+          headerTitleStyle: {
+            color: theme.text.primary,
+          },
+          sceneStyle: {
+            backgroundColor: theme.bg.primary,
+          },
         }}
       >
         {drawerItems.map((item) => (
@@ -21,6 +38,7 @@ export default function RootLayout() {
             options={{
               title: item.label,
               drawerLabel: item.label,
+              drawerLabelStyle: { color: theme.text.primary },
               drawerIcon: ({ color, size }) => (
                 <Ionicons name={item.icon} size={size} color={color} />
               ),
@@ -28,7 +46,17 @@ export default function RootLayout() {
           />
         ))}
       </Drawer>
-      <StatusBar style="auto" />
+      <StatusBar style={themeName === 'dark' ? 'light' : 'dark'} />
+    </>
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider>
+        <ThemedDrawer />
+      </ThemeProvider>
     </GestureHandlerRootView>
   )
 }

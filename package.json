@@ -1,0 +1,35 @@
+{
+  "name": "squeez-mobile",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "npm run start -w @squeez/mobile",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "typescript": "^5.6.3"
+  },
+  "overrides": {
+    "react-server-dom-webpack": {
+      "react": "$react",
+      "react-dom": "$react"
+    }
+  }
+}

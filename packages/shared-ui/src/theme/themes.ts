@@ -132,4 +132,3 @@ export const themes = {
   orange: orangeTheme,
 } as const
 
-export type ThemeName = keyof typeof themes

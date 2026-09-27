@@ -1,6 +1,9 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import { themes, type Theme, type ThemeName } from './themes'
+import { useUiStore, type ThemeName } from '@squeez/shared-store'
+import { themes, type Theme } from './themes'
+
+export type { ThemeName }
 
 type ThemeContextValue = {
   theme: Theme
@@ -12,18 +15,11 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 type ThemeProviderProps = {
   children: ReactNode
-  initialTheme?: ThemeName
 }
 
-export function ThemeProvider({
-  children,
-  initialTheme = 'light',
-}: ThemeProviderProps) {
-  const [themeName, setThemeName] = useState<ThemeName>(initialTheme)
-
-  const setTheme = useCallback((name: ThemeName) => {
-    setThemeName(name)
-  }, [])
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const themeName = useUiStore((s) => s.theme)
+  const setTheme = useUiStore((s) => s.setTheme)
 
   const value = useMemo<ThemeContextValue>(
     () => ({

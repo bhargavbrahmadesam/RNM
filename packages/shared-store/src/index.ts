@@ -1,2 +1,6 @@
 export { useAuthStore } from './authStore'
-export { useUiStore } from './uiStore'
+export {
+  useUiStore,
+  type ThemeName,
+  type NavigationMode,
+} from './uiStore'

@@ -2,6 +2,7 @@
   "name": "squeez-mobile",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "npm@11.19.0",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -14,7 +15,8 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "gen": "turbo gen"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.19.2",
@@ -24,7 +26,9 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@turbo/gen": "^2.11.5",
     "prettier": "^3.9.9",
+    "turbo": "^2.11.5",
     "typescript": "^5.6.3"
   },
   "overrides": {

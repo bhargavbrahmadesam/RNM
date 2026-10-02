@@ -22,6 +22,7 @@
     "@squeez/shared-types": "*",
     "@squeez/shared-ui": "*",
     "@squeez/feature-splash": "*",
+    "@squeez/feature-toolkit": "*",
     "expo": "~57.0.25",
     "expo-constants": "~57.0.19",
     "expo-dev-client": "~57.0.19",

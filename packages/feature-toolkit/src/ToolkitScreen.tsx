@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet } from 'react-native'
 import { Card, Screen, ThemedText } from '@squeez/shared-ui'
 import { ThemeSwitcher } from './ThemeSwitcher'
-import { showcases } from './index'
+import { showcases } from './showcases'
 
 export function ToolkitScreen() {
   return (

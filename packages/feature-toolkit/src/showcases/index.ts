@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import { TypographyShowcase } from './TypographyShowcase'
 import { ButtonsShowcase } from './ButtonsShowcase'
+import { TablesShowcase } from './TablesShowcase'
 
 export type Showcase = {
   id: string
@@ -13,4 +14,5 @@ export type Showcase = {
 export const showcases: Showcase[] = [
   { id: 'typography', title: 'Text', Component: TypographyShowcase },
   { id: 'buttons', title: 'Buttons', Component: ButtonsShowcase },
+  { id: 'tables', title: 'Tables', Component: TablesShowcase },
 ]

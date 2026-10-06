@@ -4,6 +4,7 @@ import { ButtonsShowcase } from './ButtonsShowcase'
 import { TablesShowcase } from './TablesShowcase'
 import { CardsShowcase } from './CardsShowcase'
 import { ColorsShowcase } from './ColorsShowcase'
+import { NotificationsShowcase } from './NotificationsShowcase'
 
 export type Showcase = {
   id: string
@@ -19,4 +20,5 @@ export const showcases: Showcase[] = [
   { id: 'tables', title: 'Tables', Component: TablesShowcase },
   { id: 'cards', title: 'Cards', Component: CardsShowcase },
   { id: 'colors', title: 'Colors', Component: ColorsShowcase },
+  { id: 'notifications', title: 'Notifications', Component: NotificationsShowcase },
 ]

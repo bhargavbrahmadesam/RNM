@@ -21,6 +21,7 @@
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.19.2",
     "axios": "^1.7.9",
+    "expo-notifications": "*",
     "react": "19.2.3",
     "react-native": "0.86.3",
     "zustand": "^5.0.2"

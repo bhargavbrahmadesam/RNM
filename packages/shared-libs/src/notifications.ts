@@ -26,7 +26,7 @@ export async function setupAndroidChannel(): Promise<void> {
   await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
     name: 'Default',
     importance: Notifications.AndroidImportance.HIGH,
-    sound: 'default',
+    sound: 'bip.wav',
   })
 }
 
@@ -47,7 +47,7 @@ export async function scheduleLocalNotification({
     content: {
       title,
       body,
-      sound: true,
+      sound: 'bip.wav',
       data: url ? { url } : {},
     },
     trigger: {

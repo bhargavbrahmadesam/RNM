@@ -24,7 +24,8 @@
     "expo-notifications": "*",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "expo": "~57.0.25"
   },
   "devDependencies": {
     "@turbo/gen": "^2.11.5",

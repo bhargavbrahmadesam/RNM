@@ -1,32 +1,92 @@
+import { useEffect, useState } from 'react'
+import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { Screen, Table, ThemedText, type Column } from '@squeez/shared-ui'
-type Row = { id: string; name: string; status: string; amount: number }
+import { apiClient, getApiErrorMessage } from '@squeez/shared-lib'
 
-const rows: Row[] = [
-  { id: '1', name: 'Alice', status: 'Active', amount: 1200 },
-  { id: '2', name: 'Bob', status: 'Pending', amount: 850 },
-  { id: '3', name: 'Carol', status: 'Active', amount: 2100 },
-]
+type Photo = {
+  albumId: number
+  id: number
+  title: string
+  url: string
+  thumbnailUrl: string
+}
 
-const columns: Column<Row>[] = [
-  { key: 'name', title: 'Name', flex: 2 },
-  { key: 'status', title: 'Status' },
+const columns: Column<Photo>[] = [
+  { key: 'id', title: 'ID', width: 60 },
+  { key: 'title', title: 'Title', flex: 2 },
   {
-    key: 'amount',
-    title: 'Amount',
+    key: 'albumId',
+    title: 'Album',
+    width: 70,
     align: 'right',
-    render: (row) => <ThemedText>${row.amount.toLocaleString()}</ThemedText>,
   },
 ]
 
 export default function DashboardRoute() {
+  const [photos, setPhotos] = useState<Photo[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    apiClient
+      .get<Photo[]>('/photos')
+      .then((data) => {
+        if (!cancelled) setPhotos(data)
+      })
+      .catch((e) => {
+        if (!cancelled) setError(getApiErrorMessage(e))
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  if (loading) {
+    return (
+      <Screen>
+        <View style={styles.centered}>
+          <ActivityIndicator />
+          <ThemedText tone="secondary" style={styles.text}>
+            Loading photos…
+          </ThemedText>
+        </View>
+      </Screen>
+    )
+  }
+
+  if (error) {
+    return (
+      <Screen>
+        <View style={styles.centered}>
+          <ThemedText tone="danger">{error}</ThemedText>
+        </View>
+      </Screen>
+    )
+  }
+
   return (
     <Screen scrollable>
+      <ThemedText variant="h1" style={styles.title}>
+        Photos
+      </ThemedText>
       <Table
-        data={rows}
+        data={photos}
         columns={columns}
-        keyExtractor={(row) => row.id}
+        keyExtractor={(row) => String(row.id)}
         onRowPress={(row) => console.log('pressed', row.id)}
       />
     </Screen>
   )
 }
+
+const styles = StyleSheet.create({
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
+  text: { marginTop: 8 },
+  title: { marginBottom: 12 },
+})

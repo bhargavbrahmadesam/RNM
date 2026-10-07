@@ -1,4 +1,4 @@
-export { apiClient, fetchDemoUser } from './api'
+export { apiClient, ApiError, getApiErrorMessage } from './api'
 export {
   requestNotificationPermission,
   setupAndroidChannel,

@@ -12,7 +12,7 @@ type Photo = {
 }
 
 export default function DashboardRoute() {
-  const [photo, setPhoto] = useState<Photo | null>(null)
+  const [photos, setPhotos] = useState<Photo[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -20,9 +20,9 @@ export default function DashboardRoute() {
     let cancelled = false
 
     apiClient
-      .get<Photo>('/photos/1')
+      .get<Photo[]>('/photos?_limit=4')
       .then((data) => {
-        if (!cancelled) setPhoto(data)
+        if (!cancelled) setPhotos(data)
       })
       .catch((e) => {
         if (!cancelled) setError(getApiErrorMessage(e))
@@ -56,22 +56,27 @@ export default function DashboardRoute() {
     )
   }
 
-  if (!photo) return null
-
   return (
     <Screen scrollable>
       <ThemedText variant="h1" style={styles.title}>
-        Photo #{photo.id}
+        Photos
       </ThemedText>
 
-      <Image source={{ uri: photo.url }} style={styles.image} resizeMode="cover" />
-
-      <ThemedText variant="body" style={styles.caption}>
-        {photo.title}
-      </ThemedText>
-      <ThemedText variant="caption" tone="secondary">
-        Album {photo.albumId}
-      </ThemedText>
+      {photos.map((photo) => (
+        <View key={photo.id} style={styles.card}>
+          <Image
+            source={{ uri: photo.url }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <ThemedText variant="label" style={styles.photoTitle}>
+            #{photo.id} · {photo.title}
+          </ThemedText>
+          <ThemedText variant="caption" tone="secondary">
+            Album {photo.albumId}
+          </ThemedText>
+        </View>
+      ))}
     </Screen>
   )
 }
@@ -79,12 +84,13 @@ export default function DashboardRoute() {
 const styles = StyleSheet.create({
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   title: { marginBottom: 16 },
+  card: { marginBottom: 24 },
   image: {
     width: '100%',
     aspectRatio: 1,
     borderRadius: 12,
-    marginBottom: 12,
+    marginBottom: 8,
     backgroundColor: '#eee',
   },
-  caption: { marginBottom: 4 },
+  photoTitle: { marginBottom: 2 },
 })

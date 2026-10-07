@@ -21,9 +21,7 @@ export function Screen({
   const { theme } = useTheme()
   const insets = useSafeAreaInsets()
 
-  const containerStyle = [
-    styles.base,
-    { backgroundColor: theme.bg.primary },
+  const paddingStyle = [
     padded && styles.padded,
     {
       paddingTop: padded && edges.includes('top') ? insets.top + 16 : undefined,
@@ -35,8 +33,8 @@ export function Screen({
   if (scrollable) {
     return (
       <ScrollView
-        style={[styles.base, { backgroundColor: theme.bg.primary }]}
-        contentContainerStyle={containerStyle}
+        style={[styles.fill, { backgroundColor: theme.bg.primary }]}
+        contentContainerStyle={paddingStyle}
         {...rest}
       >
         {children}
@@ -45,13 +43,16 @@ export function Screen({
   }
 
   return (
-    <View style={containerStyle} {...rest}>
+    <View
+      style={[styles.fill, { backgroundColor: theme.bg.primary }, paddingStyle]}
+      {...rest}
+    >
       {children}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  base: { flex: 1 },
+  fill: { flex: 1 },
   padded: { paddingHorizontal: 20 },
 })

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ActivityIndicator, View, StyleSheet } from 'react-native'
-import { Screen, Table, ThemedText, type Column } from '@squeez/shared-ui'
+import { ActivityIndicator, Image, View, StyleSheet } from 'react-native'
+import { Screen, ThemedText } from '@squeez/shared-ui'
 import { apiClient, getApiErrorMessage } from '@squeez/shared-lib'
 
 type Photo = {
@@ -11,19 +11,8 @@ type Photo = {
   thumbnailUrl: string
 }
 
-const columns: Column<Photo>[] = [
-  { key: 'id', title: 'ID', width: 60 },
-  { key: 'title', title: 'Title', flex: 2 },
-  {
-    key: 'albumId',
-    title: 'Album',
-    width: 70,
-    align: 'right',
-  },
-]
-
 export default function DashboardRoute() {
-  const [photos, setPhotos] = useState<Photo[]>([])
+  const [photo, setPhoto] = useState<Photo | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -31,9 +20,9 @@ export default function DashboardRoute() {
     let cancelled = false
 
     apiClient
-      .get<Photo[]>('/photos')
+      .get<Photo>('/photos/1')
       .then((data) => {
-        if (!cancelled) setPhotos(data)
+        if (!cancelled) setPhoto(data)
       })
       .catch((e) => {
         if (!cancelled) setError(getApiErrorMessage(e))
@@ -52,9 +41,6 @@ export default function DashboardRoute() {
       <Screen>
         <View style={styles.centered}>
           <ActivityIndicator />
-          <ThemedText tone="secondary" style={styles.text}>
-            Loading photos…
-          </ThemedText>
         </View>
       </Screen>
     )
@@ -70,23 +56,35 @@ export default function DashboardRoute() {
     )
   }
 
+  if (!photo) return null
+
   return (
     <Screen scrollable>
       <ThemedText variant="h1" style={styles.title}>
-        Photos
+        Photo #{photo.id}
       </ThemedText>
-      <Table
-        data={photos}
-        columns={columns}
-        keyExtractor={(row) => String(row.id)}
-        onRowPress={(row) => console.log('pressed', row.id)}
-      />
+
+      <Image source={{ uri: photo.url }} style={styles.image} resizeMode="cover" />
+
+      <ThemedText variant="body" style={styles.caption}>
+        {photo.title}
+      </ThemedText>
+      <ThemedText variant="caption" tone="secondary">
+        Album {photo.albumId}
+      </ThemedText>
     </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
-  text: { marginTop: 8 },
-  title: { marginBottom: 12 },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  title: { marginBottom: 16 },
+  image: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: 12,
+    marginBottom: 12,
+    backgroundColor: '#eee',
+  },
+  caption: { marginBottom: 4 },
 })
